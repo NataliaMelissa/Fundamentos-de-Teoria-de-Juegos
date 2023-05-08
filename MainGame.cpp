@@ -6,11 +6,13 @@ using namespace std;
 
 //Constructor
 MainGame::MainGame() {
+	n = 2; //Cantidad de Sprites
 	window = nullptr;
 	width = 800;
 	height = 600;
 	gameState = GameState::PLAY;
 	time = 0;
+	sprite = new Sprite[n];
 }
 
 //Destructor
@@ -71,11 +73,18 @@ void MainGame::draw() {
 	
 	GLuint TimeLocation = program.GetUniformLocation("time"); //Obtener la variable time del shader
 	glUniform1f(TimeLocation, time); //Mandar la variable time al shader
-	time += 2; //Incrementar la variable time
+	time += 0002; //Incrementar la variable time
 	
 	program.Use(); 
-	sprite[0].draw(); //Dibujar el sprite1
-	sprite[1].draw(); //Dibujar el sprite2
+
+	//Dibujar los sprites
+	for (int i = 0; i < n; i++) {
+		sprite[i].draw(); //Dibujar el sprite
+	}
+	
+	//Pruebas
+	//sprite[0].draw(); //Dibujar el sprite1
+	//sprite[1].draw(); //Dibujar el sprite2
 	program.Unuse();
 
 	//Si tengo los elementos actualizados:

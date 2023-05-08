@@ -8,11 +8,12 @@ enum class GameState {PLAY, EXIT};
 
 class MainGame {
 	//Atributos
+	int n; //Cantidad de sprites
 	int width; //ancho del escenario
 	int height; //Alto del escenario
 	float time; //Variable de tiempo usada por el shader
 	SDL_Window* window; //variable para dibujar en pantalla 
-	Sprite* sprite = new Sprite[2]; //Vector de Sprites
+	Sprite* sprite; //Vector de Sprites
 	HLSL_Program program; //variable del programa
 
 	//Funciones
