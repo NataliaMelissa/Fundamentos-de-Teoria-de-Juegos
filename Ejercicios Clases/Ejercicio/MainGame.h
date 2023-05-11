@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "HLSL_Program.h"
 #include "Window.h"
+#include "Camera2D.h"
 
 enum class GameState { PLAY, EXIT };
 
@@ -18,6 +19,7 @@ class MainGame {
 	Window window;
 	Sprite sprite;
 	HLSL_Program program; //variable del programa
+	Camera2D camera2D; //cámara 2D
 
 	//Funciones
 	void init();

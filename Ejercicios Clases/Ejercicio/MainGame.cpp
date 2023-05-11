@@ -12,6 +12,7 @@ MainGame::MainGame() {
 	height = 600;
 	gameState = GameState::PLAY;
 	time = 0;
+	camera2D.init(width, height); //Inicializar cámara
 	//sprite = new Sprite[n];
 }
 
@@ -82,10 +83,17 @@ void MainGame::draw() {
 
 	glActiveTexture(GL_TEXTURE0); //Usar la textura
 
+	//Tiempo
 	GLuint TimeLocation = program.GetUniformLocation("time"); //Obtener la variable time del shader
 	glUniform1f(TimeLocation, time); //Mandar la variable time al shader
 	time += 0002; //Incrementar la variable time
 
+	//Cámara
+	glm::mat4 cameraMatrix = camera2D.getCameraMatrix(); //Obtener la matriz de la cámara
+	GLuint pCameraLocation = program.GetUniformLocation("pCamera"); //Obtener la varaibale cámara del shader
+	glUniformMatrix4fv(pCameraLocation, 1, GL_FALSE, &(cameraMatrix[0][0])); //Mandar la variable pCameraLocation al shader
+
+	//Imágen
 	GLuint imageLocation = program.GetUniformLocation("myImage"); //Obtener la variable myImage del shader
 	glUniform1i(imageLocation, 0); //Mandar la variable myImage al shader
 
