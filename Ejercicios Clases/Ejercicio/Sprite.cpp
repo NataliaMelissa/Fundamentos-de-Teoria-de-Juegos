@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "Vertex.h"
+#include "ResourceManager.h"
 #include <cstddef>
 
 
@@ -9,10 +10,15 @@ Sprite::Sprite() {
 }
 
 //Método: Destructor:
-Sprite::~Sprite() {}
+Sprite::~Sprite() {
+
+	if (vboID != 0) { 
+		glDeleteBuffers(1, &vboID); //Borrar el buffer del ID
+	}
+}
 
 //Método: Función para inicializar los elementos
-void Sprite::Init(float x, float y, int width, int height) {
+void Sprite::Init(float x, float y, int width, int height, string TexturePath) {
 	this->x = x;
 	this->y = y;
 	this->width = width;
@@ -50,7 +56,18 @@ void Sprite::Init(float x, float y, int width, int height) {
 	VertexData[10] = x + width;
 	VertexData[11] = y + height;*/
 
+	texture = ResourceManager::getTexture(TexturePath); //Asignar la imágen a la textura
+
 	Vertex VertexData[6]; //Variable con los vectores de las posiciones de los vértices
+
+	//Inicializar las posiciones UV de la imágen del sprite para cada vértice:
+	VertexData[0].SetUV(1.0f, 1.0f); //Vértice 1
+	VertexData[1].SetUV(0.0f, 1.0f); //Vértice 2
+	VertexData[2].SetUV(0.0f, 0.0f); //Vértice 3
+	VertexData[3].SetUV(0.0f, 0.0f); //Vértice 4
+	VertexData[4].SetUV(1.0f, 0.0f); //Vértice 5
+	VertexData[5].SetUV(1.0f, 1.0f); //Vértice 6
+
 
 	//Inicializar las posiciones de los vértices
 	VertexData[0].SetPosition(x + width, y + height);	//Vértice 1
@@ -76,15 +93,17 @@ void Sprite::Init(float x, float y, int width, int height) {
 
 //Método: Función para dibujar
 void Sprite::draw() {
-	glBindBuffer(GL_ARRAY_BUFFER, vboID); //1. Pasar la información al buffer
+	glBindTexture(GL_TEXTURE_2D, texture.id); //1.1 Mandar el ID de la texturav
+	glBindBuffer(GL_ARRAY_BUFFER, vboID); //1.2 Pasar la información al buffer
 
 	//Pasar la información de Posición
 	glEnableVertexAttribArray(0); //2. Recibe la información de la posición
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position)); //3. Mandar información de todos los vértices al buffer
 
 	//Pasar la información de Color
-	glEnableVertexAttribArray(1); //Recibe que se le pasa otro atributo (atributo de color)
+	//glEnableVertexAttribArray(1); //Recibe que se le pasa otro atributo (atributo de color)
 	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color)); //Recibe la información de color del vértice
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv)); //Recibe la información de las coordenadas uv del vértice
 
 	glDrawArrays(GL_TRIANGLES, 0, 6); //Función para dibujar
 	glDisableVertexAttribArray(0); //Decirle que ya no va a recibir información

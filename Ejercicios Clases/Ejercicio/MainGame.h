@@ -3,6 +3,7 @@
 #include <GL/eglew.h>
 #include "Sprite.h"
 #include "HLSL_Program.h"
+#include "Window.h"
 
 enum class GameState { PLAY, EXIT };
 
@@ -12,8 +13,10 @@ class MainGame {
 	int width; //ancho del escenario
 	int height; //Alto del escenario
 	float time; //Variable de tiempo usada por el shader
-	SDL_Window* window; //variable para dibujar en pantalla 
-	Sprite* sprite; //Vector de Sprites
+	//SDL_Window* window; //variable para dibujar en pantalla 
+	//Sprite* sprite; //Vector de Sprites
+	Window window;
+	Sprite sprite;
 	HLSL_Program program; //variable del programa
 
 	//Funciones
