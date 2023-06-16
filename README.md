@@ -1,2 +1,2 @@
-# Fundamentos-de-Teoria-de-Juegos
-Trabajos del curso de "Fundamentos de Teoría de Juegos"
+# Fundamentos-de-Teoria-de-Juegos TA3
+La Tarea Académica 3 (TA3) consiste en implementar la clase zombie y que aparezcan en el nivel. En este caso, los zombies aparecerán en el mapa de color rosado. 
