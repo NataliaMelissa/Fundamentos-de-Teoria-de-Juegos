@@ -18,14 +18,15 @@ void Human::init(float speed, glm::vec2 position)
 	this->position = position; //Asignarle la posición
 	color.set(68, 0, 255, 255); //Asignarle el color azul a los humanos
 
-	static std::mt19937 randomEngine(time(nullptr));
-	static std::uniform_real_distribution<float>randDir(-1.0f, 1.0f);
+	static std::mt19937 randomEngine(time(nullptr)); //Generar una semilla aleatoria
+	static std::uniform_real_distribution<float>randDir(-1.0f, 1.0f); //Distribución uniforme para generar la dirección del humano
 
-	direction = glm::vec2(randDir(randomEngine), randDir(randomEngine));
+	direction = glm::vec2(randDir(randomEngine), randDir(randomEngine)); //Asignarle la dirección en base a la semilla y la distribución
 
 	if (direction.length() == 0) {
 		direction = glm::vec2(1.0f, 1.0f);
 	}
+
 	direction = glm::vec2(direction);
 }
 

@@ -21,8 +21,8 @@ void Zombie::init(float speed, glm::vec2 position)
 
 	color.set(255, 50, 108, 255); //Asignarle el color rosado a los zombies
 
-	static std::mt19937 randomEngine(time(nullptr));
-	static std::uniform_real_distribution<float>randDir(-1.0f, 1.0f);
+	static std::mt19937 randomEngine(time(nullptr)); //Generar una semilla aleatoria
+	static std::uniform_real_distribution<float>randDir(-1.0f, 1.0f); //Distribución uniforme para generar la dirección del zombie
 
 	direction = glm::vec2(randDir(randomEngine), randDir(randomEngine)); //Asirnarle el valor a la dirección
 	
