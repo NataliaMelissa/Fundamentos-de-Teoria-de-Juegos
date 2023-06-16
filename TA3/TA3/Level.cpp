@@ -21,11 +21,13 @@ Level::Level(const string& fileName)
 
 void Level::parseLevel()
 {
-	spriteBatch.init();
-	spriteBatch.begin();
+	spriteBatch.init(); //Inicializar los vectores del sprite (crear los elementos)
+	spriteBatch.begin(); //Limpiar el batch
+
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 	Color color;
 	color.set(255, 255, 255, 255);
+
 	for (size_t y = 0; y < levelData.size(); y++)
 	{
 		for (size_t x = 0; x < levelData[y].size(); x++)
@@ -36,38 +38,47 @@ void Level::parseLevel()
 			switch (tile)
 			{
 			case 'R':
+
 			case 'B':
+				//Dibujar el sprite con la textura
 				spriteBatch.draw(destRect, uvRect,
 					ResourceManager::getTexture("Textures/red_bricks.png").id,
-					0.0f, color);
+					0.0f, color); 
 				break;
+
 			case 'G':
+				//Dibujar el sprite con la textura
 				spriteBatch.draw(destRect, uvRect,
 					ResourceManager::getTexture("Textures/glass.png").id,
 					0.0f, color);
 				break;
+
 			case 'L':
+				//Dibujar el sprite con la textura
 				spriteBatch.draw(destRect, uvRect,
 					ResourceManager::getTexture("Textures/light_bricks.png").id,
 					0.0f, color);
 				break;
-			case '@':
+
+			case '@': //Jugador (Player)
 				levelData[y][x] = '.';
 				playerPosition.x = x * TILE_WIDTH;
 				playerPosition.y = y * TILE_WIDTH;
 				break;
-			case 'Z':
+
+			case 'Z': //Zombies
 				levelData[y][x] = '.';
 				zombiesPosition.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
 				break;
 			case '.':
 				break;
+
 			default:
 				break;
 			}
 		}
 	}
-	spriteBatch.end();
+	spriteBatch.end(); //Parar de dibujar
 }
 
 void Level::draw()

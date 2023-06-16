@@ -95,12 +95,14 @@ void MainGame::init() {
 }
 
 void MainGame::initLevel() {
-	levels.push_back(new Level("Level/level1.txt"));
+	//Inicializar nivel
+	levels.push_back(new Level("Level/level1.txt")); //Agregar el nivel 1 al vector de niveles
 	currentLevel = 0;
-	//inicializar humans,player y zombie
-	player = new Player();
-	player->init(1.0f, levels[currentLevel]->getPlayerPosition(), &inputManager);
-	spriteBatch.init();
+
+	//Inicializar  el jugador 
+	player = new Player(); //Crear el jugador
+	player->init(5.0f, levels[currentLevel]->getPlayerPosition(), &inputManager); //Asignar la posición del jugador en base a los datos del nivel
+	spriteBatch.init(); //Inicializar los datos del jugador
 
 	std::mt19937 randomEngine(time(nullptr));
 	std::uniform_int_distribution<int>randPosX(
@@ -108,16 +110,26 @@ void MainGame::initLevel() {
 	std::uniform_int_distribution<int>randPosY(
 		1, levels[currentLevel]->getHeight() - 2);
 
-	for (size_t i = 0; i < levels[currentLevel]->getNumHumans(); i++)
+	//Inicializar los humanos (humans)
+	for (size_t i = 0; i < levels[currentLevel]->getNumHumans(); i++) //Obtener todos los humanos del nivel
 	{
-		humans.push_back(new Human());
+		humans.push_back(new Human()); //Crear un nuevo humano
 		glm::vec2 pos(randPosX(randomEngine) * TILE_WIDTH,
-			randPosY(randomEngine) * TILE_WIDTH);
-		humans.back()->init(1.0f, pos);
+			randPosY(randomEngine) * TILE_WIDTH); //Crear/Obtener una posición aleatoria
+		humans.back()->init(1.0f, pos); //Inicializar al humano con la posición aleatoria
+	}
+
+	//Inicializar los zombies
+	const std::vector<glm::vec2>& zombiePosition = levels[currentLevel]->getZombiesPosition(); //Obtener las posiciones de los zombies en el nivel
+
+	for (size_t i = 0; i < zombiePosition.size(); i++) { //Para cada zombie
+		zombies.push_back(new Zombie()); //Crear un nuevo zombie
+		zombies.back()->init(1.0f, zombiePosition[i]); //Asignarle la posición a cada zombie
 	}
 
 }
 
+//Dibujar todos los elementos del juego
 void MainGame::draw() {
 	glClearDepth(1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -129,15 +141,24 @@ void MainGame::draw() {
 	glUniformMatrix4fv(pCameraLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	GLuint imageLocation = program.getUniformLocation("myImage");
 	glUniform1i(imageLocation, 0);
-	spriteBatch.begin();
-	levels[currentLevel]->draw();
-	player->draw(spriteBatch);
-	for (size_t i = 0; i < humans.size(); i++)
-	{
+
+	spriteBatch.begin(); //Que empieze el sprite batch
+	levels[currentLevel]->draw(); //Dibujar el nivel
+	player->draw(spriteBatch); //Dibujar al jugador (player)
+
+	//Dibujar todos los humanos
+	for (size_t i = 0; i < humans.size(); i++) {
 		humans[i]->draw(spriteBatch);
 	}
-	spriteBatch.end();
-	spriteBatch.renderBatch();
+
+	//Dibujar todos los zombies
+	for (size_t i = 0; i < zombies.size(); i++) {
+		zombies[i]->draw(spriteBatch);
+	}
+
+	spriteBatch.end(); //Que termine el sprite batch
+	spriteBatch.renderBatch(); //rederizar los sprites del sprite batch
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 	program.unuse();
 	window.swapWindow();
