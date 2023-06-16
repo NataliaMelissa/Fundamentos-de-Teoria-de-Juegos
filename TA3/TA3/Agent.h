@@ -36,4 +36,3 @@ public:
 	virtual ~Agent();
 	bool collideWithAgent(Agent* agent);
 };
-
