@@ -21,6 +21,7 @@ MainGame::~MainGame() {
 }
 void MainGame::processInput() {
 	SDL_Event event;
+	bool inputProcessed = false; //Variable para indicar que se detectó el input o no
 	while (SDL_PollEvent(&event)) {
 		switch (event.type)
 		{
@@ -47,6 +48,12 @@ void MainGame::processInput() {
 			inputManager.releaseKey(event.button.button);
 			break;
 		}
+		//handleInput();
+		inputProcessed = true; //indicar que se detectó el input
+	}
+
+	//Si se detectó un evento, llamar a handleInput()
+	if (inputProcessed == true) {
 		handleInput();
 	}
 
@@ -64,7 +71,7 @@ void MainGame::handleInput()
 	}
 
 	if (inputManager.isKeyPressed(SDLK_f) && inicioNivel != false) {
-		cout << "Probando" << endl;
+		//cout << "Probando" << endl; Comprobar que se ejecutaba la función
 		cout << "Zombies: " << contZombies << endl; //Mostrar cantidad de zombies del nivel actualmente
 		cout << "Humanos " << contHumans << endl; //Mostrar cantidad de humanos del nivel actualmente
 	}
