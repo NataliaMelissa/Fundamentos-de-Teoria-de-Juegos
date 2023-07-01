@@ -23,6 +23,9 @@ class MainGame
 private:
 	int width;
 	int height;
+	int contZombies; //Contador de zombies
+	int contHumans; //Contador de Humanos
+	bool inicioNivel; //Ya comenzó el nivel o no
 	SpriteFont* spriteFont;
 	SpriteBatch spriteBatch;
 	SpriteBatch hudBatch;

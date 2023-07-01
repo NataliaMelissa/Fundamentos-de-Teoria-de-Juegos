@@ -11,6 +11,9 @@ MainGame::MainGame() {
 	height = 600;
 	gameState = GameState::PLAY;
 	camera2D.init(width, height);
+	contHumans = 0;
+	contZombies = 0;
+	inicioNivel = false; //El nivel aún no ha empezado
 }
 
 MainGame::~MainGame() {
@@ -59,6 +62,13 @@ void MainGame::handleInput()
 	if (inputManager.isKeyPressed(SDLK_e)) {
 		camera2D.setScale(camera2D.getScale() - SCALE_SPEED);
 	}
+
+	if (inputManager.isKeyPressed(SDLK_f) && inicioNivel != false) {
+		cout << "Probando" << endl;
+		cout << "Zombies: " << contZombies << endl; //Mostrar cantidad de zombies del nivel actualmente
+		cout << "Humanos " << contHumans << endl; //Mostrar cantidad de humanos del nivel actualmente
+	}
+
 	if (inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		//cout << "CLICK IZQUIERDO" << endl;
 		createBullet();
@@ -139,6 +149,19 @@ void MainGame::initLevel() {
 		zombies.back()->init(1.3f, zombiePosition[i]);
 	}
 	spriteFont = new SpriteFont("Fonts/arial.ttf", 64);
+
+	//Asignarle el número de humanos por nivel
+	contHumans = levels[currentLevel]->getNumHumans(); 
+	cout << "Humanos: " << contHumans << endl;
+
+	//Asignarle el número de zombies por nivel
+	contZombies = zombiePosition.size();
+	cout << "Zombies: " << contZombies << endl;
+	
+	//Indicar que empezó el nivel
+	cout << "Valor inicioNivel antes set: " << inicioNivel << endl;
+	inicioNivel = true; //Indicar que empezó el nivel
+	cout << "Valor inicioNivel luego set: " << inicioNivel << endl;
 
 }
 
@@ -228,6 +251,12 @@ void MainGame::updateElements() {
 			i++;
 		}
 	}
+
+	//Actualizar valores contador zombies:
+	contZombies = zombies.size();
+
+	//Actualizar valores contador humanos:
+	contHumans = humans.size();
 }
 
 void MainGame::update() {
